@@ -5,7 +5,7 @@ from clases import Contacto
 import os
 import sys
 
-#hola github
+#hola github aaaa
 class Menu:
     def validar_entero(self):
         while True:
@@ -16,11 +16,11 @@ class Menu:
                 print("[!] DEBES INGRESAR UN VALOR ENTERO.")
         return n
     
-    def comprobar_texto(self):
-        txt = input("[>] ").strip().upper()
+    def comprobar_texto(self, mensaje):
+        txt = input(mensaje).strip()
         while len(txt) == 0:
             print("[!] DEBES INGRESAR POR LO MENOS UN CARACTER. VUELTA A INTENTARLO.")
-            txt = input("[>] ").strip().upper()
+            txt = input(mensaje).strip()
         return txt
 
     def volver_menu(self):
@@ -80,14 +80,15 @@ class Menu:
         
     def ingresar_contacto(self):
         
-        nombre = self.comprobar_texto()
+        nombre = self.comprobar_texto("Ingrese el nombre: ")
         edad = int(input("Ingrese la edad: "))
         categoria = input("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
         direccion = input("Ingrese la dirección: ")
         telefono = int(input("Ingrese el teléfono: "))
-        es_favorito = input("¿Es favorito? (s/n): ").lower() == 's'
+        favorito = input("¿Es favorito? (s/n): ").strip().lower() == 's'
         detalles_contacto = [{'categoria': categoria, 'direccion': direccion, 'telefono': telefono}]
-        contacto = Contacto(nombre, edad, detalles_contacto,)
+        #sale con error el array por "too many positional arguments" pero si guarda el booleano en la bd
+        contacto = Contacto(nombre, edad, detalles_contacto, favorito)
         insertar_contacto(contacto)
         print("Contacto agregado.")
 
@@ -111,9 +112,7 @@ class Menu:
                 print("Contacto eliminado.")
 
             elif opcion == 4:
-                contactos = listar_contactos()
-                for contacto in contactos:
-                    print(contacto)
+                listar_contactos()
 
             elif opcion == 5:
                 print("[!] FINALIZANDO PROGRAMA.")
