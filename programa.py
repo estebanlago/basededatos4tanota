@@ -1,9 +1,14 @@
-from base_datos import insertar_contacto, modificar_contacto, eliminar_contacto, listar_contactos, coleccion_contactos
+from base_datos import insertar_contacto, modificar_contacto, eliminar_contacto, listar_contactos
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 from clases import Contacto
 import os
 import sys
+
+#conexión a la base de datos para usar la colección
+cliente = MongoClient('mongodb://localhost:27017/')
+bd = cliente['agenda']
+coleccion_contactos = bd['contactos']
 
 class Menu:
     def validar_entero(self, mensaje="[>] "):
@@ -78,20 +83,32 @@ class Menu:
     [2] Modificar contacto.
     [3] Eliminar contacto.
     [4] Listar contactos.
-    [5] SALIR.
+    [0] SALIR.
     """)
-        
+
+# Ingresar contacto 
     def ingresar_contacto(self): 
         nombre = self.comprobar_texto("Ingrese el nombre: ")
         edad = self.validar_entero("Ingrese la edad: ")
+        
         while True:
-            categoria = self.comprobar_texto("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
+            categoria_input = self.comprobar_texto("Ingrese la categoría de contacto (1: particular, 2: comercial, 3: trabajo): ")
+            if categoria_input == "1":
+                categoria = "particular"
+            elif categoria_input == "2":
+                categoria = "comercial"
+            elif categoria_input == "3":
+                categoria = "trabajo"
+            else:
+                categoria = categoria_input.lower()
+                
             if categoria.lower() not in ["particular", "comercial", "trabajo"]:
                 print("[!] DEBE INGRESAR UNA CATEGORIA. VUELTA A INTENTARLO.")
                 continue
             direccion = self.comprobar_texto("Ingrese la dirección: ")
             telefono = self.validar_entero("Ingrese el teléfono: ")
             break
+        
         favorito = input("¿Es favorito? (s/n): ").strip().lower() == 's'
         detalles_contacto = [{'categoria': categoria, 'direccion': direccion, 'telefono': telefono}]
         contacto = Contacto(nombre, edad, detalles_contacto, favorito)
@@ -99,17 +116,28 @@ class Menu:
         insertar_contacto(contacto)
         print("Contacto agregado.")
 
+
+# Modificar contacto
     def modificar_contacto(self):
         nombre = self.comprobar_texto("Ingrese el nombre del contacto a modificar: ")
         contacto = coleccion_contactos.find_one({"nombre": nombre})
-        detalles_contacto = contacto.get("detalles_contacto", [])
-        
         if not contacto:
             print("El contacto no se encuentra en la base de datos.")
             return
         
+        detalles_contacto = contacto.get("detalles_contacto", [])
+        
         while True:
-            categoria = self.comprobar_texto("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
+            categoria_input = self.comprobar_texto("Ingrese la categoría de contacto (1: particular, 2: comercial, 3: trabajo): ")
+            if categoria_input == "1":
+                categoria = "particular"
+            elif categoria_input == "2":
+                categoria = "comercial"
+            elif categoria_input == "3":
+                categoria = "trabajo"
+            else:
+                categoria = categoria_input.lower()
+                
             if categoria.lower() not in ["particular", "comercial", "trabajo"]:
                 print("[!] DEBE INGRESAR UNA CATEGORIA. VUELTA A INTENTARLO.")
                 continue
@@ -117,16 +145,21 @@ class Menu:
             telefono = self.validar_entero("Ingrese el nuevo teléfono: ")
             break
         
-        detalles_contacto.append({
-            "categoria": categoria,
-            "direccion": direccion,
-            "telefono": telefono
-        }) 
+        detalles_contacto.append({"categoria": categoria,"direccion": direccion,"telefono": telefono}) 
         
-
         modificar_contacto(nombre, detalles_contacto)
         print("Contacto modificado.")
 
+# Eliminar contacto
+    def eliminar_contacto(self):
+        nombre = self.comprobar_texto("Ingrese el nombre del contacto a eliminar: ")
+        contacto = coleccion_contactos.find_one({"nombre": nombre})
+        if not contacto:
+            print("El contacto no se encuentra en la base de datos.")
+            return
+        eliminar_contacto(nombre)
+        print("Contacto eliminado.")
+        
     def abrir_interfaz(self):
         while True:
             self.imprimir_menu()
@@ -139,14 +172,12 @@ class Menu:
                 self.modificar_contacto()
 
             elif opcion == 3:
-                nombre = input("Ingrese el nombre del contacto a eliminar: ")
-                eliminar_contacto(nombre)
-                print("Contacto eliminado.")
+                self.eliminar_contacto()
 
             elif opcion == 4:
                 listar_contactos()
 
-            elif opcion == 5:
+            elif opcion == 0:
                 print("[!] FINALIZANDO PROGRAMA.")
                 break
 
