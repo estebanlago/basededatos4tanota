@@ -15,42 +15,39 @@ def eliminar_contacto(nombre):
     coleccion_contactos.delete_one({'nombre': nombre})
 
 def listar_contactos():
+    cursor = coleccion_contactos.find()
     lista_contactos = []
-    cursor = coleccion_contactos.find()
-    cont=0
+    cont = 0
 
     for document in cursor:
-        lista_contactos = []
-    cursor = coleccion_contactos.find()
-    
-    for document in cursor:
-        nombre = document.get("nombre", "")
-        edad = document.get("edad", "")
-        favorito = document.get("favorito", False)
-        detalles_contacto = document.get("detalles_contacto", [])
+        contacto_info = {
+            "nombre": document.get('nombre'),
+            "edad": document.get('edad'),
+            "favorito": document.get('favorito'),
+            "detalles_contacto": document.get('detalles_contacto', [])
+        }
 
-        for contacto in detalles_contacto:
-            telefono = contacto.get("telefono", "")
-            direccion = contacto.get("direccion", "")
-            categoria = contacto.get("categoria", "")
-        
-            lista_contactos.append({
-                "nombre": nombre,
-                "edad": edad,
-                "favorito": favorito,
-                "telefono": telefono,
-                "direccion": direccion,
-                "categoria": categoria.lower(),
-            })
+        # Agregar el contacto a la lista de contactos jeje
+        lista_contactos.append(contacto_info)
 
-    for dato in lista_contactos:
-        cont= cont+1
-        print(f"""              [{cont}]""")
-        print(f"Nombre: {dato['nombre']}")
-        print(f"Edad: {dato['edad']}")
-        print(f"Favorito: {dato['favorito']}")
-        print(f"Telefono: {dato['telefono']}")
-        print(f"Direccion: {dato['direccion']}")
-        print(f"Categoria: {dato['categoria']}")
-        print("-" * 20)
-    
+    # Este ciclo muestra los contactos
+    for contacto in lista_contactos:
+        cont = cont + 1
+        print(" ")
+        print(f"        [{cont}]  ")
+        print(f"    Nombre: {contacto['nombre']}")
+        print(f"    Edad: {contacto['edad']}")
+        if contacto['favorito'] == True:
+            contacto['favorito'] = "Si"
+        else:
+            contacto['favorito'] = "No"
+        print(f"    Favorito: {contacto['favorito']}")
+        print(" ")
+        print(" Detalles del Contacto:")
+        print(" ")
+        for detalle in contacto['detalles_contacto']:
+            print(f"  Categoría: {detalle['categoria']}")
+            print(f"  Dirección: {detalle['direccion']}")
+            print(f"  Teléfono: {detalle['telefono']}")
+            print("-----------------------------------")
+
