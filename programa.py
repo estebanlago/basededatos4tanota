@@ -12,7 +12,7 @@ class Menu:
                 n = int(input("[>] "))
                 break
             except ValueError:
-                print("[!] DEBES INGRESAR UN VALOR ENTERO.")
+                print("[!] DEBES INGRESAR UN VALOR ENTERO A.")
         return n
     
     def comprobar_texto(self):
