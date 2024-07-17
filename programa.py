@@ -75,35 +75,56 @@ class Menu:
         print("""BIENVENIDO. INGRESE UN ENTERO ACORDE A LA ACCION QUE DESEA REALIZAR:
         
     [1] Ingresar nuevo contacto.
+    [2] Modificar contacto.
+    [3] Eliminar contacto.
+    [4] Listar contactos.
+    [5] SALIR.
     """)
         
-    def ingresar_contacto(self):
-        
+    def ingresar_contacto(self): 
         nombre = self.comprobar_texto("Ingrese el nombre: ")
         edad = self.validar_entero("Ingrese la edad: ")
-        categoria = self.comprobar_texto("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
-        direccion = self.comprobar_texto("Ingrese la dirección: ")
-        telefono = self.validar_entero("Ingrese el teléfono: ")
+        while True:
+            categoria = self.comprobar_texto("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
+            if categoria.lower() not in ["particular", "comercial", "trabajo"]:
+                print("[!] DEBE INGRESAR UNA CATEGORIA. VUELTA A INTENTARLO.")
+                continue
+            direccion = self.comprobar_texto("Ingrese la dirección: ")
+            telefono = self.validar_entero("Ingrese el teléfono: ")
+            break
         favorito = input("¿Es favorito? (s/n): ").strip().lower() == 's'
         detalles_contacto = [{'categoria': categoria, 'direccion': direccion, 'telefono': telefono}]
         contacto = Contacto(nombre, edad, detalles_contacto, favorito)
+        
         insertar_contacto(contacto)
         print("Contacto agregado.")
 
     def modificar_contacto(self):
         nombre = self.comprobar_texto("Ingrese el nombre del contacto a modificar: ")
         contacto = coleccion_contactos.find_one({"nombre": nombre})
+        detalles_contacto = contacto.get("detalles_contacto", [])
         
         if not contacto:
-            print("Contacto no encontrado.")
+            print("El contacto no se encuentra en la base de datos.")
             return
         
-        categoria = self.comprobar_texto("Ingrese la nueva categoría de contacto (particular, comercial, trabajo): ")
-        direccion = self.comprobar_texto("Ingrese la nueva dirección: ")
-        telefono = self.validar_entero("Ingrese el nuevo teléfono: ")
-        nuevos_detalles = {"categoria": categoria,"direccion": direccion,"telefono": telefono}
+        while True:
+            categoria = self.comprobar_texto("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
+            if categoria.lower() not in ["particular", "comercial", "trabajo"]:
+                print("[!] DEBE INGRESAR UNA CATEGORIA. VUELTA A INTENTARLO.")
+                continue
+            direccion = self.comprobar_texto("Ingrese la nueva dirección: ")
+            telefono = self.validar_entero("Ingrese el nuevo teléfono: ")
+            break
+        
+        detalles_contacto.append({
+            "categoria": categoria,
+            "direccion": direccion,
+            "telefono": telefono
+        }) 
+        
 
-        modificar_contacto(nombre, nuevos_detalles)
+        modificar_contacto(nombre, detalles_contacto)
         print("Contacto modificado.")
 
     def abrir_interfaz(self):
