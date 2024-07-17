@@ -8,7 +8,8 @@ def insertar_contacto(contacto):
     coleccion_contactos.insert_one(contacto.__dict__)
 
 def modificar_contacto(nombre, nuevos_detalles):
-    coleccion_contactos.update_one({'nombre': nombre}, {'$set': nuevos_detalles})
+    # no estoy seguro si pide $set o {"$push": {"detalles_contacto": nuevos_detalles}}
+    coleccion_contactos.update_one({'nombre': nombre}, {'$push': nuevos_detalles})
 
 def eliminar_contacto(nombre):
     coleccion_contactos.delete_one({'nombre': nombre})
@@ -23,11 +24,6 @@ def listar_contactos():
     cursor = coleccion_contactos.find()
     
     for document in cursor:
-<<<<<<< HEAD
-=======
-        cont= cont+1
-        print(f"""              [{cont}]""")
->>>>>>> badd5eb88f00055534c26dd62bbe149b9b613c98
         nombre = document.get("nombre", "")
         edad = document.get("edad", "")
         favorito = document.get("favorito", False)
@@ -48,11 +44,8 @@ def listar_contactos():
             })
 
     for dato in lista_contactos:
-<<<<<<< HEAD
         cont= cont+1
         print(f"""              [{cont}]""")
-=======
->>>>>>> badd5eb88f00055534c26dd62bbe149b9b613c98
         print(f"Nombre: {dato['nombre']}")
         print(f"Edad: {dato['edad']}")
         print(f"Favorito: {dato['favorito']}")

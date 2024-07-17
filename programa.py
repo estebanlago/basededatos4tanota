@@ -1,16 +1,15 @@
-from base_datos import insertar_contacto, modificar_contacto, eliminar_contacto, listar_contactos
+from base_datos import insertar_contacto, modificar_contacto, eliminar_contacto, listar_contactos, coleccion_contactos
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 from clases import Contacto
 import os
 import sys
 
-#hola github aaaa
 class Menu:
-    def validar_entero(self):
+    def validar_entero(self, mensaje="[>] "):
         while True:
             try:
-                n = int(input("[>] "))
+                n = int(input(mensaje))
                 break
             except ValueError:
                 print("[!] DEBES INGRESAR UN VALOR ENTERO.")
@@ -66,7 +65,7 @@ class Menu:
             
         except ConnectionFailure:
             print("[!] No es posible entablar conexión con instancia de MongoDB en 'localhost:27017'.")
-            print("[!] Asegúrate de que el servicio de MongoDB esté incializado y vuelve a ejecutar el programa.")
+            print("[!] Asegúrate de que el servicio de MongoDB esté inicializado y vuelve a ejecutar el programa.")
             print(" ")
             input("[>] Ingrese cualquier valor para cerrar el programa: ")
             sys.exit()
@@ -81,16 +80,31 @@ class Menu:
     def ingresar_contacto(self):
         
         nombre = self.comprobar_texto("Ingrese el nombre: ")
-        edad = int(input("Ingrese la edad: "))
-        categoria = input("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
-        direccion = input("Ingrese la dirección: ")
-        telefono = int(input("Ingrese el teléfono: "))
+        edad = self.validar_entero("Ingrese la edad: ")
+        categoria = self.comprobar_texto("Ingrese la categoría de contacto (particular, comercial, trabajo): ")
+        direccion = self.comprobar_texto("Ingrese la dirección: ")
+        telefono = self.validar_entero("Ingrese el teléfono: ")
         favorito = input("¿Es favorito? (s/n): ").strip().lower() == 's'
         detalles_contacto = [{'categoria': categoria, 'direccion': direccion, 'telefono': telefono}]
-        #sale con error el array por "too many positional arguments" pero si guarda el booleano en la bd
         contacto = Contacto(nombre, edad, detalles_contacto, favorito)
         insertar_contacto(contacto)
         print("Contacto agregado.")
+
+    def modificar_contacto(self):
+        nombre = self.comprobar_texto("Ingrese el nombre del contacto a modificar: ")
+        contacto = coleccion_contactos.find_one({"nombre": nombre})
+        
+        if not contacto:
+            print("Contacto no encontrado.")
+            return
+        
+        categoria = self.comprobar_texto("Ingrese la nueva categoría de contacto (particular, comercial, trabajo): ")
+        direccion = self.comprobar_texto("Ingrese la nueva dirección: ")
+        telefono = self.validar_entero("Ingrese el nuevo teléfono: ")
+        nuevos_detalles = {"categoria": categoria,"direccion": direccion,"telefono": telefono}
+
+        modificar_contacto(nombre, nuevos_detalles)
+        print("Contacto modificado.")
 
     def abrir_interfaz(self):
         while True:
@@ -101,10 +115,7 @@ class Menu:
                 self.ingresar_contacto()
 
             elif opcion == 2:
-                nombre = input("Ingrese el nombre del contacto a modificar: ")
-                nuevos_datos = {'edad': int(input("Ingrese la nueva edad: "))}
-                modificar_contacto(nombre, nuevos_datos)
-                print("Contacto modificado.")
+                self.modificar_contacto()
 
             elif opcion == 3:
                 nombre = input("Ingrese el nombre del contacto a eliminar: ")
