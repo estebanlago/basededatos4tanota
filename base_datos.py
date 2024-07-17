@@ -1,5 +1,4 @@
 from pymongo import MongoClient
-import pprint
 
 cliente = MongoClient('mongodb://localhost:27017/')
 bd = cliente['agenda']
