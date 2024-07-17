@@ -23,6 +23,11 @@ def listar_contactos():
     cursor = coleccion_contactos.find()
     
     for document in cursor:
+<<<<<<< HEAD
+=======
+        cont= cont+1
+        print(f"""              [{cont}]""")
+>>>>>>> badd5eb88f00055534c26dd62bbe149b9b613c98
         nombre = document.get("nombre", "")
         edad = document.get("edad", "")
         favorito = document.get("favorito", False)
@@ -43,8 +48,11 @@ def listar_contactos():
             })
 
     for dato in lista_contactos:
+<<<<<<< HEAD
         cont= cont+1
         print(f"""              [{cont}]""")
+=======
+>>>>>>> badd5eb88f00055534c26dd62bbe149b9b613c98
         print(f"Nombre: {dato['nombre']}")
         print(f"Edad: {dato['edad']}")
         print(f"Favorito: {dato['favorito']}")
