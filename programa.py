@@ -111,9 +111,7 @@ class Menu:
                 print("Contacto eliminado.")
 
             elif opcion == 4:
-                contactos = listar_contactos()
-                for contacto in contactos:
-                    print(contacto)
+                listar_contactos()
 
             elif opcion == 5:
                 print("[!] FINALIZANDO PROGRAMA.")
