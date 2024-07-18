@@ -128,7 +128,24 @@ class Menu:
         print(" ")
         print("¿ES FAVORITO? (S/N): ")
         print(" ")
-        favorito = input("[>] ").strip().lower() == 's'
+        favorito = input("[>] ").strip().lower()
+        print(" ")
+        while True:
+            try:
+                if favorito.lower() == "s":
+                    favorito = True
+                    break
+                elif favorito.lower() == "n":
+                    favorito = False
+                    break
+                else:
+                    print("¡¡¡INGRESE UNA OPCIÓN VÁLIDA!!!")
+                    print(" ")
+                    print("¿ES FAVORITO? (S/N): ")
+                    print(" ")
+                    favorito = input("[>] ").lower()
+            except ValueError:
+                print("error")
         detalles_contacto = [{'categoria': categoria, 'direccion': direccion, 'telefono': telefono}]
         contacto = Contacto(nombre, edad, detalles_contacto, favorito)
         
