@@ -8,7 +8,6 @@ def insertar_contacto(contacto):
     coleccion_contactos.insert_one(contacto.__dict__)
 
 def modificar_contacto(nombre, detalles_contacto):
-    # no estoy seguro si pide $set o {"$push": {"detalles_contacto": nuevos_detalles}}
     coleccion_contactos.update_one({'nombre': nombre}, {'$set': {"detalles_contacto": detalles_contacto} })
 
 def eliminar_contacto(nombre):

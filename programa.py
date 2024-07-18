@@ -5,7 +5,7 @@ from clases import Contacto
 import os
 import sys
 
-#conexión a la base de datos para usar la colección
+# Conexión a la base de datos para usar la colección
 cliente = MongoClient('mongodb://localhost:27017/')
 bd = cliente['agenda']
 coleccion_contactos = bd['contactos']
@@ -96,7 +96,7 @@ class Menu:
         print("INGRESE LA EDAD DE CONTACTO: ")
         print(" ")
         edad = self.validar_entero("[>] ")
-        
+        # Validación de categoría para que pueda ser ingresada como texto o como número (string)
         while True:
             print(" ")
             print("INGRESE LA CATEGORIA DE CONTACTO ([1] PARTICULAR, [2] COMERCIAL, [3] TRABAJO)")
@@ -163,7 +163,7 @@ class Menu:
             return
         
         detalles_contacto = contacto.get("detalles_contacto", [])
-        
+        # Validación de categoría para que pueda ser ingresada como texto o como número (string)
         while True:
             categoria_input = self.comprobar_texto("INGRESE LA CATEGORIA DE CONTACTO ([1] PARTICULAR, [2] COMERCIAL, [3] TRABAJO)")
             if categoria_input == "1":
