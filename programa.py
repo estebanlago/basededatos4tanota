@@ -155,6 +155,7 @@ class Menu:
 
 # Modificar contacto
     def modificar_contacto(self):
+        self.limpiar()
         nombre = self.comprobar_texto("Ingrese el nombre del contacto a modificar: ")
         contacto = coleccion_contactos.find_one({"nombre": nombre})
         if not contacto:
@@ -188,6 +189,7 @@ class Menu:
 
 # Eliminar contacto
     def eliminar_contacto(self):
+        self.limpiar()
         nombre = self.comprobar_texto("Ingrese el nombre del contacto a eliminar: ")
         contacto = coleccion_contactos.find_one({"nombre": nombre})
         if not contacto:
@@ -211,6 +213,7 @@ class Menu:
                 self.eliminar_contacto()
 
             elif opcion == 4:
+                self.limpiar()
                 listar_contactos()
 
             elif opcion == 0:
