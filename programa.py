@@ -125,6 +125,7 @@ class Menu:
             telefono = self.validar_entero("[>] ")
             break
         
+        print(" ")
         print("¿ES FAVORITO? (S/N): ")
         print(" ")
         favorito = input("[>] ").strip().lower() == 's'
