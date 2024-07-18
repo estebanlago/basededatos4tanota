@@ -89,10 +89,13 @@ class Menu:
 # Ingresar contacto 
     def ingresar_contacto(self): 
         self.limpiar()
-        print("INGRESE EL NOMBRE DEL NUEVO CONTACTO A AGREGAR:")
+        print("INGRESE EL NOMBRE DEL NUEVO CONTACTO A AGREGAR: ")
         print(" ")
         nombre = self.comprobar_texto("[>] ")
-        edad = self.validar_entero("Ingrese la edad: ")
+        print(" ")
+        print("INGRESE LA EDAD DE CONTACTO: ")
+        print(" ")
+        nombre = self.validar_entero("[>] ")
         
         while True:
             categoria_input = self.comprobar_texto("Ingrese la categoría de contacto (1: particular, 2: comercial, 3: trabajo): ")
