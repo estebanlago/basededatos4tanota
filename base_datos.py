@@ -15,6 +15,11 @@ def eliminar_contacto(nombre):
     coleccion_contactos.delete_one({'nombre': nombre})
 
 def listar_contactos():
+    # Cuenta todos los documentos en la colección ({}), si no hay documentos (0) imprime un mensaje y devuelve al menú principal
+    if coleccion_contactos.count_documents({}) == 0:
+        print("[!] No hay contactos ingresados.")
+        return 
+    
     cursor = coleccion_contactos.find()
     lista_contactos = []
     
