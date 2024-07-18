@@ -90,7 +90,8 @@ class Menu:
     def ingresar_contacto(self): 
         self.limpiar()
         print("INGRESE EL NOMBRE DEL NUEVO CONTACTO A AGREGAR:")
-        nombre = self.comprobar_texto("Ingrese el nombre: ")
+        print(" ")
+        nombre = self.comprobar_texto("[>] ")
         edad = self.validar_entero("Ingrese la edad: ")
         
         while True:
