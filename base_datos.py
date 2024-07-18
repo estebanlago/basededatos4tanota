@@ -41,7 +41,7 @@ def listar_contactos():
         print(f"        [{cont}]  ")
         print(f"    Nombre: {contacto['nombre']}")
         print(f"    Edad: {contacto['edad']}")
-        favorito = "Si" if contacto['favorito'] else "No"
+        favorito = "Si" if contacto['favorito'] else "No"  #Operador Ternario: Variable = [Condicion si es True] if [variable] else [Condicion si es False]
         print(f"    Favorito: {favorito}")
         print(" ")
         print(" Detalles del Contacto:")
