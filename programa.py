@@ -95,10 +95,13 @@ class Menu:
         print(" ")
         print("INGRESE LA EDAD DE CONTACTO: ")
         print(" ")
-        nombre = self.validar_entero("[>] ")
+        edad = self.validar_entero("[>] ")
         
         while True:
-            categoria_input = self.comprobar_texto("Ingrese la categoría de contacto (1: particular, 2: comercial, 3: trabajo): ")
+            print(" ")
+            print("INGRESE LA CATEGORIA DE CONTACTO ([1] PARTICULAR, [2] COMERCIAL, [3] TRABAJO")
+            print(" ")
+            categoria_input = self.comprobar_texto("[>] ")
             if categoria_input == "1":
                 categoria = "particular"
             elif categoria_input == "2":
@@ -110,17 +113,26 @@ class Menu:
                 
             if categoria.lower() not in ["particular", "comercial", "trabajo"]:
                 print("[!] DEBE INGRESAR UNA CATEGORIA. VUELTA A INTENTARLO.")
+                print(" ")
                 continue
-            direccion = self.comprobar_texto("Ingrese la dirección: ")
-            telefono = self.validar_entero("Ingrese el teléfono: ")
+            print(" ")
+            print("INGRESE LA DIRECCION: ")
+            print(" ")
+            direccion = self.comprobar_texto("[>] ")
+            print(" ")
+            print("INGRESE EL TELEFONO: ")
+            print(" ")
+            telefono = self.validar_entero("[>] ")
             break
         
-        favorito = input("¿Es favorito? (s/n): ").strip().lower() == 's'
+        print("¿ES FAVORITO? (S/N): ")
+        print(" ")
+        favorito = input("[>] ").strip().lower() == 's'
         detalles_contacto = [{'categoria': categoria, 'direccion': direccion, 'telefono': telefono}]
         contacto = Contacto(nombre, edad, detalles_contacto, favorito)
         
         insertar_contacto(contacto)
-        print("Contacto agregado.")
+        print("CONTACTO AGREGADO")
 
 
 # Modificar contacto
